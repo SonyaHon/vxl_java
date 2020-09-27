@@ -67,17 +67,32 @@ public class Renderer {
     }
 
     public void render(Entity entity) {
-        if (! entity.hasComponents(List.of(StaticMeshData.class, Transform.class, Material.class))) {
-            return;
-        }
         Material material = entity.getComponent(Material.class);
         StaticMeshData meshData = entity.getComponent(StaticMeshData.class);
         Transform transform = entity.getComponent(Transform.class);
 
-        render(meshData, material, transform);
+
+        if (entity.hasComponents(List.of(StaticMeshData.class, Transform.class, Material.class))) {
+            render(meshData, material, transform);
+        }
 
         for(Entity child : entity.getChildren()) {
-            render(child);
+            render(child, entity);
+        }
+    }
+
+    private void render(Entity entity, Entity parent) {
+        Material material = entity.getComponent(Material.class);
+        StaticMeshData meshData = entity.getComponent(StaticMeshData.class);
+        Transform transform = entity.getComponent(Transform.class);
+
+
+        if (entity.hasComponents(List.of(StaticMeshData.class, Transform.class, Material.class))) {
+            render(meshData, material, Transform.withParent(transform, parent.getComponent(Transform.class)));
+        }
+
+        for(Entity child : entity.getChildren()) {
+            render(child, entity);
         }
     }
 

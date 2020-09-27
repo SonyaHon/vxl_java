@@ -7,20 +7,25 @@ public class Transform {
     protected Vector3f position;
     protected Vector3f rotation;
     protected Vector3f scaleVector;
-    protected Vector3f direction;
 
-    public Transform(Vector3f position, Vector3f rotation, Vector3f scale, Vector3f direction) {
+    public Transform(Vector3f position, Vector3f rotation, Vector3f scale) {
         this.position = position;
         this.rotation = rotation;
         this.scaleVector = scale;
-        this.direction = direction;
     }
 
     public Transform() {
         this.position = new Vector3f(0f, 0f, 0f);
         this.rotation = new Vector3f(0f, 0f, 0f);
         this.scaleVector = new Vector3f(1f, 1f, 1f);
-        this.direction = new Vector3f(0, 0, -1);
+    }
+
+    public static Transform withParent(Transform transform, Transform parent) {
+        Transform t = new Transform(transform.position, transform.rotation, transform.scaleVector);
+        t.translateVector(parent.getPosition());
+        t.rotateVector(parent.getRotation());
+        t.scaleVector(parent.getScale());
+        return t;
     }
 
     public Vector3f getPosition() {
@@ -128,13 +133,5 @@ public class Transform {
         viewMatrix.rotate( (float) rotation.z, new Vector3f(0f, 0f, 1f));
         viewMatrix.translate(position.get(new Vector3f()).mul(-1));
         return viewMatrix;
-    }
-
-    public Vector3f getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Vector3f direction) {
-        this.direction = direction;
     }
 }

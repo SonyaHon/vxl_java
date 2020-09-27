@@ -7,7 +7,11 @@ public class Terrain extends Entity {
     public Terrain() {
         super("Terrain");
         addComponent(new Transform());
+        generateChunks();
     }
 
+    private void generateChunks() {
+        
+    }
 
 }
