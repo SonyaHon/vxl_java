@@ -53,7 +53,7 @@ public class Main {
             DisplayManager.clearDisplay();
 
             // Logic
-//            Game.INSTANCE.update();
+            Game.INSTANCE.update();
 
             player.update();
 
