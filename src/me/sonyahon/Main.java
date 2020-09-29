@@ -1,19 +1,16 @@
 package me.sonyahon;
 
 import me.sonyahon.engine.d3.MeshDataFactory;
-import me.sonyahon.engine.d3.StaticMeshData;
 import me.sonyahon.engine.d3.Transform;
 import me.sonyahon.engine.display.DisplayManager;
-import me.sonyahon.engine.entity.Entity;
-import me.sonyahon.engine.graphics.Material;
 import me.sonyahon.engine.render.Renderer;
-import me.sonyahon.engine.resource.obj.OBJLoader;
 import me.sonyahon.engine.resource.shader.ShaderManager;
 import me.sonyahon.engine.resource.texture.TextureManager;
+import me.sonyahon.engine.terrain.Terrain;
 import me.sonyahon.engine.utils.ShaderTouple;
+import me.sonyahon.game.Game;
+import me.sonyahon.game.MainCamera;
 import me.sonyahon.game.Player;
-import me.sonyahon.game.prefab.Plane;
-import org.joml.Vector3f;
 import org.lwjgl.opengl.GL20;
 
 import java.util.List;
@@ -30,25 +27,23 @@ public class Main {
         TextureManager.instance.load("test", "test");
         TextureManager.instance.load("mgvoxel", "mgvoxel");
 
-        Transform playerTransform = new Transform();
-        Player player = new Player(playerTransform, null, null);
+        Player player = new Player(new Transform(), null, null);
 
+        MainCamera.INSTANCE.getTransform().translateY(5f);
 
-        StaticMeshData meshData = OBJLoader.load("tester");
-        Transform transform = new Transform();
-        transform.translateZ(-3);
-        Entity tester = new Entity(transform, meshData, new Material(ShaderManager.instance.get("textured"), TextureManager.instance.getMGVoxel()));
-
-        Plane plane = new Plane(new Transform(), new Vector3f(0.5f, 0.5f, 0.5f));
-        plane.getTransform().setScale(new Vector3f(50, 1, 50));
+        Terrain terrain = new Terrain();
 
         while (!DisplayManager.shouldMainWindowClose()) {
             DisplayManager.clearDisplay();
 
+            // Logic
+            Game.INSTANCE.update();
+            System.out.println(Game.INSTANCE.getSunPosition());
+
             player.update();
 
-            Renderer.render(plane);
-            Renderer.render(tester);
+            // Rendering
+            Renderer.render(terrain);
 
             DisplayManager.updateDisplay();
             int glError = GL20.glGetError();

@@ -5,6 +5,7 @@ import me.sonyahon.engine.d3.Transform;
 import me.sonyahon.engine.entity.Entity;
 import me.sonyahon.engine.graphics.Material;
 import me.sonyahon.engine.resource.shader.ShaderProgram;
+import me.sonyahon.game.Game;
 import me.sonyahon.game.MainCamera;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -38,9 +39,13 @@ public class Renderer {
     private static void render(StaticMeshData meshData, Material material, Transform transform) {
         ShaderProgram program = material.getShaderProgram();
         program.bind();
-        program.addMatrix4fUniform("tmat", transform.getTransformMatrix());
-        program.addMatrix4fUniform("pmat", MainCamera.INSTANCE.getProjectionMatrix());
-        program.addMatrix4fUniform("vmat", MainCamera.INSTANCE.getTransform().getViewMatrix());
+        program.addMatrix4fUniform("transform_matrix", transform.getTransformMatrix());
+        program.addMatrix4fUniform("projection_matrix", MainCamera.INSTANCE.getProjectionMatrix());
+        program.addMatrix4fUniform("view_matrix", MainCamera.INSTANCE.getTransform().getViewMatrix());
+        program.addFloatUniform("ambient_strength", Game.INSTANCE.getAmbientStrength());
+        program.addVector3fUniform("ambient_color", Game.INSTANCE.getAmbientColor());
+        program.addVector3fUniform("sun_position", Game.INSTANCE.getSunPosition());
+
 
         GL30.glBindVertexArray(meshData.getVaoID());
         enableVertexAttribArrays(meshData.getUsedAttribArrays());

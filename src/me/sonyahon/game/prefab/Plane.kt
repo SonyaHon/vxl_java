@@ -11,7 +11,7 @@ class Plane(transform: Transform, color: Vector3f) : Entity(transform, null, Mat
     init {
         val mesh = Mesh();
 
-        val verts = listOf(
+        val vertices = listOf(
                 Vector3f(-1f, 0f, -1f),
                 Vector3f(1f, 0f, -1f),
                 Vector3f(-1f, 0f, 1f),
@@ -32,7 +32,7 @@ class Plane(transform: Transform, color: Vector3f) : Entity(transform, null, Mat
 
         val indices = listOf(0, 1, 2, 2, 1, 3)
 
-        mesh.setVertices(verts)
+        mesh.setVertices(vertices)
         mesh.setNormals(normals)
         mesh.setColors(colors)
         mesh.setIndices(indices)
