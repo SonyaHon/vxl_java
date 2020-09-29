@@ -60,10 +60,9 @@ public class Transform {
     }
 
     public Vector3f getDirection() {
-        Vector3f baseDirection = new Vector3f(0, 0, -1);
-        baseDirection.rotateX((float) Math.toRadians(this.rotation.x));
-        baseDirection.rotateY((float) Math.toRadians(this.rotation.y));
-        baseDirection.rotateZ((float) Math.toRadians(this.rotation.z));
+        Vector3f baseDirection = new Vector3f(0, 0, 1);
+        baseDirection.rotateX(this.rotation.x * -1);
+        baseDirection.rotateY(this.rotation.y * -1);
         return baseDirection;
     }
 

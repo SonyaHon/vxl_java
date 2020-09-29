@@ -37,20 +37,18 @@ public class Player extends Entity {
         Vector3f direction = MainCamera.instance.getTransform().getDirection();
 
        if (InputManager.instance.isKeyPressed(KeyCode.W)) {
-//            velocity.add(MainCamera.instance.getTransform().getDirection().get(new Vector3f()).mul(1));
-           velocity.add(0, 0, -0.1f);
+            velocity.add(MainCamera.instance.getTransform().getDirection().get(new Vector3f()).mul(-1));
         } else if (InputManager.instance.isKeyPressed(KeyCode.S)) {
-//            velocity.add(MainCamera.instance.getTransform().getDirection().get(new Vector3f()).mul(-1));
-           velocity.add(0, 0, 0.1f);
+            velocity.add(MainCamera.instance.getTransform().getDirection().get(new Vector3f()).mul(1));
         }
 
         Vector3f projection = new Vector3f(MainCamera.instance.getTransform().getDirection().x, 0, MainCamera.instance.getTransform().getDirection().z);
         Vector3f perpendicular = projection.get(new Vector3f()).cross(new Vector3f(0, 1, 0));
 
         if (InputManager.instance.isKeyPressed(KeyCode.A)) {
-            velocity.add(perpendicular.get(new Vector3f()).mul(-1));
-        } else if (InputManager.instance.isKeyPressed(KeyCode.D)) {
             velocity.add(perpendicular.get(new Vector3f()).mul(1));
+        } else if (InputManager.instance.isKeyPressed(KeyCode.D)) {
+            velocity.add(perpendicular.get(new Vector3f()).mul(-1));
         }
 
 

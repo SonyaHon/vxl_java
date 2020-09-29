@@ -10,6 +10,6 @@ uniform mat4 vmat;
 out vec2 uv;
 
 void main() {
-    gl_Position = pmat * vmat * tmat * vec4(vertexPos, 1.0);
+    gl_Position =  pmat * vmat *  tmat *  vec4(vertexPos, 1.0);
     uv = uvPos;
 }

@@ -46,19 +46,24 @@ public class DisplayManager {
             });
             glfwSetInputMode(MAIN_WINDOW, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
+            int realW = 0;
+            int realH = 0;
             try (MemoryStack stack = stackPush()) {
-                IntBuffer pWidth = stack.mallocInt(1); // int*
+                IntBuffer pWidth  = stack.mallocInt(1); // int*
                 IntBuffer pHeight = stack.mallocInt(1); // int*
 
                 glfwGetWindowSize(MAIN_WINDOW, pWidth, pHeight);
+
+                realW = pWidth.get(0);
+                realH = pHeight.get(0);
 
                 GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
                 assert vidMode != null;
                 glfwSetWindowPos(
                         MAIN_WINDOW,
-                        (vidMode.width() - pWidth.get(0)) / 2,
-                        (vidMode.height() - pHeight.get(0)) / 2
+                        (vidMode.width() - realW) / 2,
+                        (vidMode.height() - realH) / 2
                 );
             } // the stack frame is popped automatically
 
@@ -69,7 +74,7 @@ public class DisplayManager {
 
 
             GL.createCapabilities();
-            GL11.glViewport(0, 0, Reference.DISPLAY_WIDTH , Reference.DISPLAY_HEIGHT );
+//            GL11.glViewport(0, 0, realW, realH);
             GL11.glEnable(GL_DEPTH_TEST);
 
         } catch (RuntimeException e) {

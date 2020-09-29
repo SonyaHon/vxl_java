@@ -12,6 +12,8 @@ import me.sonyahon.engine.resource.shader.ShaderManager;
 import me.sonyahon.engine.resource.texture.TextureManager;
 import me.sonyahon.engine.utils.ShaderTouple;
 import me.sonyahon.game.Player;
+import me.sonyahon.game.environment.DemoFloor;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL20;
 
 import java.util.List;
@@ -29,19 +31,18 @@ public class Main {
         TextureManager.instance.load("mgvoxel", "mgvoxel");
 
         Transform playerTransform = new Transform();
-//        playerTransform.translate(0, 0, 5);
         Player player = new Player(playerTransform, null, null);
 
-//        Transform floorTransform = new Transform();
-//        floorTransform.setScale(new Vector3f(100, 1, 100));
-//        floorTransform.translate(80, -2, -50);
-//        DemoFloor floor = new DemoFloor(floorTransform, new Material(ShaderManager.instance.get("color"), null));
 
         StaticMeshData meshData = OBJLoader.load("tester");
         Transform transform = new Transform();
-        transform.setScaleUniform(.2f);
-//        transform.translateZ(-10);
+        transform.translateZ(-3);
         Entity tester = new Entity(transform, meshData, new Material(ShaderManager.instance.get("textured"), TextureManager.instance.getMGVoxel()));
+
+        Transform floorTransform = new Transform();
+        floorTransform.setScale(new Vector3f(50, 1, 50));
+        floorTransform.translateY(-3);
+        DemoFloor floor = new DemoFloor(floorTransform, new Material(ShaderManager.instance.get("color"), null));
 
 //        MainCamera.instance.getTransform().rotateX(45);
 
@@ -51,6 +52,7 @@ public class Main {
             player.update();
 
             Renderer.render(tester);
+            Renderer.render(floor);
 
             DisplayManager.updateDisplay();
             int glError = GL20.glGetError();
