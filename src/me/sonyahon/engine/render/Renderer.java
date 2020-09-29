@@ -3,8 +3,8 @@ package me.sonyahon.engine.render;
 import me.sonyahon.engine.d3.StaticMeshData;
 import me.sonyahon.engine.d3.Transform;
 import me.sonyahon.engine.entity.Entity;
-import me.sonyahon.engine.resource.shader.ShaderProgram;
 import me.sonyahon.engine.graphics.Material;
+import me.sonyahon.engine.resource.shader.ShaderProgram;
 import me.sonyahon.game.MainCamera;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -39,8 +39,8 @@ public class Renderer {
         ShaderProgram program = material.getShaderProgram();
         program.bind();
         program.addMatrix4fUniform("tmat", transform.getTransformMatrix());
-        program.addMatrix4fUniform("pmat", MainCamera.instance.getProjectionMatrix());
-        program.addMatrix4fUniform("vmat", MainCamera.instance.getTransform().getViewMatrix());
+        program.addMatrix4fUniform("pmat", MainCamera.INSTANCE.getProjectionMatrix());
+        program.addMatrix4fUniform("vmat", MainCamera.INSTANCE.getTransform().getViewMatrix());
 
         GL30.glBindVertexArray(meshData.getVaoID());
         enableVertexAttribArrays(meshData.getUsedAttribArrays());
@@ -77,97 +77,4 @@ public class Renderer {
             GL20.glDisableVertexAttribArray(array);
         }
     }
-
-////    public void render(StaticMeshData meshData) {
-////        GL30.glBindVertexArray(meshData.getVaoID());
-////        enableVertexAttribArrays(meshData.getUsedAttribArrays());
-////
-////        GL11.glDrawElements(GL11.GL_TRIANGLES, meshData.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-////
-////        disableVertexAttribArrays(meshData.getUsedAttribArrays());
-////        GL30.glBindVertexArray(0);
-////    }
-////
-//
-//    private Entity camera;
-//
-//    public Renderer(Entity camera) throws DoesNotHaveRequiredComponents {
-//        if(!camera.hasComponents(List.of(Transform.class, Camera.class))) {
-//            throw new DoesNotHaveRequiredComponents();
-//        }
-//        this.camera = camera;
-//    }
-//
-//
-//    public void render(StaticMeshData meshData, Material material, Transform transform) {
-//        ShaderProgram program = material.getShaderProgram();
-//        program.bind();
-//        program.addMatrix4fUniform("tmat", transform.getTransformMatrix());
-//        program.addMatrix4fUniform("pmat", camera.<Camera>getComponent(Camera.class).getProjectionMatrix());
-//        program.addMatrix4fUniform("vmat", camera.<Transform>getComponent(Transform.class).getViewMatrix());
-//
-//        GL30.glBindVertexArray(meshData.getVaoID());
-//        enableVertexAttribArrays(meshData.getUsedAttribArrays());
-//
-//
-//        if (material.hasTexture()) {
-//            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-//            material.getTexture().bind();
-//        }
-//
-//        GL11.glDrawElements(GL11.GL_TRIANGLES, meshData.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-//
-//
-//        if (material.hasTexture()) {
-//            GL13.glActiveTexture(GL13.GL_TEXTURE0);
-//            material.getTexture().unbind();
-//        }
-//
-//        disableVertexAttribArrays(meshData.getUsedAttribArrays());
-//        GL30.glBindVertexArray(0);
-//
-//        program.unbind();
-//    }
-//
-//    public void render(Entity entity) {
-//        Material material = entity.getComponent(Material.class);
-//        StaticMeshData meshData = entity.getComponent(StaticMeshData.class);
-//        Transform transform = entity.getComponent(Transform.class);
-//
-//
-//        if (entity.hasComponents(List.of(StaticMeshData.class, Transform.class, Material.class))) {
-//            render(meshData, material, transform);
-//        }
-//
-//        for(Entity child : entity.getChildren()) {
-//            render(child, entity);
-//        }
-//    }
-//
-//    private void render(Entity entity, Entity parent) {
-//        Material material = entity.getComponent(Material.class);
-//        StaticMeshData meshData = entity.getComponent(StaticMeshData.class);
-//        Transform transform = entity.getComponent(Transform.class);
-//
-//
-//        if (entity.hasComponents(List.of(StaticMeshData.class, Transform.class, Material.class))) {
-//            render(meshData, material, Transform.withParent(transform, parent.getComponent(Transform.class)));
-//        }
-//
-//        for(Entity child : entity.getChildren()) {
-//            render(child, entity);
-//        }
-//    }
-//
-//    private void enableVertexAttribArrays(List<Integer> arrays) {
-//        for(int array : arrays) {
-//            GL20.glEnableVertexAttribArray(array);
-//        }
-//    }
-//
-//    private void disableVertexAttribArrays(List<Integer> arrays) {
-//        for(int array : arrays) {
-//            GL20.glDisableVertexAttribArray(array);
-//        }
-//    }
 }
