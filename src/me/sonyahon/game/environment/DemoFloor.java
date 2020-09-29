@@ -15,10 +15,10 @@ public class DemoFloor extends Entity {
         Mesh mesh = new Mesh();
 
         List<Vector3f> verts = List.of(
-                new Vector3f(-1, -1, 0),
-                new Vector3f(1, -1, 0),
-                new Vector3f(-1, 1, 0),
-                new Vector3f(1, 1, 0)
+                new Vector3f(-1, 0, -1),
+                new Vector3f(1, 0, -1),
+                new Vector3f(-1, 0, 1),
+                new Vector3f(1, 0, 1)
         );
         List<Vector3f> normals = List.of(
                 new Vector3f(0, 1, 0),

@@ -99,6 +99,10 @@ public class Transform {
         translate(0, value, 0);
     }
 
+    public void translateZ(float value) {
+        translate(0, 0, value);
+    }
+
     public void rotate(Vector3f vector) {
         rotation.add(vector);
     }
@@ -109,5 +113,9 @@ public class Transform {
 
     public void rotateX(float value) {
         rotate(value, 0, 0);
+    }
+
+    public void rotateY(float value) {
+        rotate(0, value, 0);
     }
 }

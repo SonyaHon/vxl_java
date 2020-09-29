@@ -1,16 +1,7 @@
 package me.sonyahon.engine.systems;
 
-import me.sonyahon.engine.d3.Transform;
-import me.sonyahon.engine.entity.Entity;
-import me.sonyahon.engine.input.InputManager;
-import me.sonyahon.engine.input.KeyCode;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-
 public class CameraFreeController extends VXLSystem {
 
-    private Vector2f mouseLastPosition = new Vector2f();
-    private Vector2f mouseCurrentPosition = new Vector2f();
 
     @Override
     public void update() {

@@ -1,55 +1,56 @@
 package me.sonyahon;
 
 import me.sonyahon.engine.d3.MeshDataFactory;
+import me.sonyahon.engine.d3.StaticMeshData;
 import me.sonyahon.engine.d3.Transform;
 import me.sonyahon.engine.display.DisplayManager;
-import me.sonyahon.engine.errors.DoesNotHaveRequiredComponents;
+import me.sonyahon.engine.entity.Entity;
 import me.sonyahon.engine.graphics.Material;
 import me.sonyahon.engine.render.Renderer;
+import me.sonyahon.engine.resource.obj.OBJLoader;
 import me.sonyahon.engine.resource.shader.ShaderManager;
 import me.sonyahon.engine.resource.texture.TextureManager;
 import me.sonyahon.engine.utils.ShaderTouple;
 import me.sonyahon.game.Player;
-import me.sonyahon.game.environment.DemoFloor;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.system.CallbackI;
 
-import java.sql.Ref;
 import java.util.List;
 
 public class Main {
     private void loop() {
-
-        ShaderManager.instance.load(List.of(
-                new ShaderTouple(GL20.GL_VERTEX_SHADER, "plain-white/vertex"),
-                new ShaderTouple(GL20.GL_FRAGMENT_SHADER, "plain-white/fragment")
-        ), "plain-white");
-        ShaderManager.instance.load(List.of(
-                new ShaderTouple(GL20.GL_VERTEX_SHADER, "textured/vertex"),
-                new ShaderTouple(GL20.GL_FRAGMENT_SHADER, "textured/fragment")
-        ), "textured");
-        ShaderManager.instance.load(List.of(
-                new ShaderTouple(GL20.GL_VERTEX_SHADER, "color/vertex"),
-                new ShaderTouple(GL20.GL_FRAGMENT_SHADER, "color/fragment")
-        ), "color");
-
+        ShaderManager.instance.load(List.of(new ShaderTouple(GL20.GL_VERTEX_SHADER, "plain-white/vertex"),
+                new ShaderTouple(GL20.GL_FRAGMENT_SHADER, "plain-white/fragment")), "plain-white");
+        ShaderManager.instance.load(List.of(new ShaderTouple(GL20.GL_VERTEX_SHADER, "textured/vertex"),
+                new ShaderTouple(GL20.GL_FRAGMENT_SHADER, "textured/fragment")), "textured");
+        ShaderManager.instance.load(List.of(new ShaderTouple(GL20.GL_VERTEX_SHADER, "color/vertex"),
+                new ShaderTouple(GL20.GL_FRAGMENT_SHADER, "color/fragment")), "color");
 
         TextureManager.instance.load("test", "test");
         TextureManager.instance.load("mgvoxel", "mgvoxel");
 
         Transform playerTransform = new Transform();
-        playerTransform.translate(0, 0, 5);
-//        playerTransform.rotate(-90, 0, 0);
+//        playerTransform.translate(0, 0, 5);
         Player player = new Player(playerTransform, null, null);
 
-        Transform floorTransform = new Transform();
-        floorTransform.translateY(-1);
-        DemoFloor floor = new DemoFloor(floorTransform, new Material(ShaderManager.instance.get("color"), null));
+//        Transform floorTransform = new Transform();
+//        floorTransform.setScale(new Vector3f(100, 1, 100));
+//        floorTransform.translate(80, -2, -50);
+//        DemoFloor floor = new DemoFloor(floorTransform, new Material(ShaderManager.instance.get("color"), null));
+
+        StaticMeshData meshData = OBJLoader.load("tester");
+        Transform transform = new Transform();
+        transform.setScaleUniform(.2f);
+//        transform.translateZ(-10);
+        Entity tester = new Entity(transform, meshData, new Material(ShaderManager.instance.get("textured"), TextureManager.instance.getMGVoxel()));
+
+//        MainCamera.instance.getTransform().rotateX(45);
 
         while (!DisplayManager.shouldMainWindowClose()) {
             DisplayManager.clearDisplay();
 
-            Renderer.render(floor);
+            player.update();
+
+            Renderer.render(tester);
 
             DisplayManager.updateDisplay();
             int glError = GL20.glGetError();

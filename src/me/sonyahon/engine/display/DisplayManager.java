@@ -1,7 +1,6 @@
 package me.sonyahon.engine.display;
 
 import me.sonyahon.Reference;
-import me.sonyahon.engine.input.InputManager;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -14,7 +13,6 @@ import java.util.Objects;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -71,7 +69,7 @@ public class DisplayManager {
 
 
             GL.createCapabilities();
-            GL11.glViewport(0, 0, Reference.DISPLAY_WIDTH, Reference.DISPLAY_HEIGHT);
+            GL11.glViewport(0, 0, Reference.DISPLAY_WIDTH , Reference.DISPLAY_HEIGHT );
             GL11.glEnable(GL_DEPTH_TEST);
 
         } catch (RuntimeException e) {
