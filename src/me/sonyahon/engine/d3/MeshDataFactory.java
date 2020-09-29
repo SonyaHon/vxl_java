@@ -1,6 +1,5 @@
 package me.sonyahon.engine.d3;
 
-import me.sonyahon.engine.components.StaticMeshData;
 import me.sonyahon.engine.utils.Buffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -17,19 +16,7 @@ public class MeshDataFactory {
     private static final List<Integer> vaoIDs = new ArrayList<>();
     private static final List<Integer> vboIDs = new ArrayList<>();
 
-    /**
-     * Standard mesh data
-     */
-//    public static MeshData fromData(Vector3f[] vertices, int[] indices) {
-//        int vaoID = createVAO();
-//        bindVAO(vaoID);
-//        createIndicesVBO(indices);
-//        createVBO(Buffer.bufferFromVector3FArray(vertices), 0, 3);
-//        unbindVAO();
-//        return new MeshData(vaoID, indices.length, List.of(0));
-//    }
-
-    public static StaticMeshData fromData(float[] vertices, float[] uvs, float[] normals, int[] indices) {
+    public static StaticMeshData fromDataUVs(float[] vertices, float[] uvs, float[] normals, int[] indices) {
         int vaoId = createVAO();
         bindVAO(vaoId);
         createIndicesVBO(indices);
@@ -41,6 +28,17 @@ public class MeshDataFactory {
         return new StaticMeshData(vaoId, indices.length, List.of(0, 1, 2));
     }
 
+    public static StaticMeshData fromDataColors(float[] vertices, float[] colors, float[] normals, int[] indices) {
+        int vaoId = createVAO();
+        bindVAO(vaoId);
+        createIndicesVBO(indices);
+        createVBO(Buffer.bufferFromFloatArray(vertices), 0, 3);
+        createVBO(Buffer.bufferFromFloatArray(colors), 1, 3);
+        createVBO(Buffer.bufferFromFloatArray(normals), 2, 3);
+        unbindVAO();
+
+        return new StaticMeshData(vaoId, indices.length, List.of(0, 1, 2));
+    }
 
     public static void drop() {
         for (int vaoId : vaoIDs) {

@@ -1,4 +1,4 @@
-package me.sonyahon.engine.components;
+package me.sonyahon.engine.graphics;
 
 import me.sonyahon.engine.resource.shader.ShaderProgram;
 import me.sonyahon.engine.resource.texture.Texture;

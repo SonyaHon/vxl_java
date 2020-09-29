@@ -1,100 +1,66 @@
 package me.sonyahon.engine.entity;
 
-import java.lang.reflect.Type;
+import me.sonyahon.engine.d3.StaticMeshData;
+import me.sonyahon.engine.d3.Transform;
+import me.sonyahon.engine.graphics.Material;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Entity {
-    private final List<Component> components = new ArrayList<>();
-    private final List<Entity> children = new ArrayList<>();
+    private Transform transform;
+    private StaticMeshData meshData;
+    private Material material;
     private String tag = "";
 
-    public Entity() {
+    private List<Entity> children = new ArrayList<>();
+
+    public Entity(Transform transform, StaticMeshData meshData, Material material) {
+        this.transform = transform;
+        this.meshData = meshData;
+        this.material = material;
     }
 
-    public Entity(String tag) {
+    public Entity(Transform transform, StaticMeshData meshData, Material material, String tag) {
+        this.transform = transform;
+        this.meshData = meshData;
+        this.material = material;
         this.tag = tag;
     }
 
-    public <T> void addComponent(T component) {
-        components.add(new Component(component, component.getClass()));
+    public void setTransform(Transform transform) {
+        this.transform = transform;
     }
 
-    public void removeComponent(Type componentType) {
-        for (int i = 0, componentsSize = components.size(); i < componentsSize; i++) {
-            Component component = components.get(i);
-            if (component.getRealType() == componentType) {
-                components.remove(i);
-                break;
-            }
-        }
+    public void setMeshData(StaticMeshData meshData) {
+        this.meshData = meshData;
     }
 
-    public <T> T getComponent(Type componentType) {
-        for (Component component : components) {
-            if (component.getRealType() == componentType) {
-                return (T) component.getRealComponent();
-            }
-        }
-        return null;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
-    public boolean hasComponents(List<Type> types) {
-        for (Type type : types) {
-            if (!hasComponent(type)) {
-                return false;
-            }
-        }
-        return true;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
-    public <T> boolean hasComponent(Type componentType) {
-        for (Component component : components) {
-            if (component.getRealType() == componentType) {
-                return true;
-            }
-        }
-        return false;
+    public Transform getTransform() {
+        return transform;
     }
 
-    public void addChild(Entity e) {
-        children.add(e);
+    public StaticMeshData getMeshData() {
+        return meshData;
     }
 
-    public void removeChild(int index) {
-        children.remove(index) ;
-    }
-
-    public void removeChild(String tag) {
-        for (int i = 0; i < children.size(); i++) {
-            Entity e = children.get(i);
-            if(e.tag.equals(tag)) {
-                children.remove(i);
-                break;
-            }
-        }
-    }
-
-    public void clearChildren() {
-        children.clear();
-    }
-
-    public Entity getChild(int index) {
-        return children.get(index);
-    }
-
-    public Entity getChild(String tag) {
-        for (Entity child : children) {
-            if (child.tag.equals(tag)) {
-                return child;
-            }
-        }
-        return null;
+    public Material getMaterial() {
+        return material;
     }
 
     public List<Entity> getChildren() {
         return children;
     }
 
-
+    public void addChild(Entity e) {
+        this.children.add(e);
+    }
 }

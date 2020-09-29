@@ -1,17 +1,18 @@
-package me.sonyahon.engine.components;
+package me.sonyahon.engine.d3;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Transform {
-    protected Vector3f position;
-    protected Vector3f rotation;
-    protected Vector3f scaleVector;
+    private Vector3f position;
+    private Vector3f rotation;
+    private Vector3f scaleVector;
 
     public Transform(Vector3f position, Vector3f rotation, Vector3f scale) {
         this.position = position;
         this.rotation = rotation;
         this.scaleVector = scale;
+
     }
 
     public Transform() {
@@ -20,11 +21,13 @@ public class Transform {
         this.scaleVector = new Vector3f(1f, 1f, 1f);
     }
 
-    public static Transform withParent(Transform transform, Transform parent) {
+    public static Transform withParent(Transform transform, Transform parentTransform) {
         Transform t = new Transform(transform.position, transform.rotation, transform.scaleVector);
-        t.translateVector(parent.getPosition());
-        t.rotateVector(parent.getRotation());
-        t.scaleVector(parent.getScale());
+
+        t.setPosition(t.getPosition().get(new Vector3f()).add(parentTransform.getPosition()));
+        t.setRotation(t.getRotation().get(new Vector3f()).add(parentTransform.getRotation()));
+        t.setScale(t.getScale().get(new Vector3f()).mul(parentTransform.getScale()));
+
         return t;
     }
 
@@ -56,64 +59,12 @@ public class Transform {
         this.setScale(new Vector3f(scale, scale, scale));
     }
 
-    public void translateVector(Vector3f vector) {
-        this.position.add(vector);
-    }
-
-    public void translate(float x, float y, float z) {
-        this.position.add(new Vector3f(x, y, z));
-    }
-
-    public void translateX(float x) {
-        this.translate(x, 0f, 0f);
-    }
-
-    public void translateY(float y) {
-        this.translate(0, y, 0);
-    }
-
-    public void translateZ(float z) {
-        this.translate(0, 0, z);
-    }
-
-    public void rotateVector(Vector3f vector) {
-        this.rotation.add(vector);
-    }
-
-    public void rotate(float x, float y, float z) {
-        this.rotation.add(new Vector3f(x, y, z));
-    }
-
-    public void rotateX(float x) {
-        this.rotate(x, 0f, 0f);
-    }
-
-    public void rotateY(float y) {
-        this.rotate(0, y, 0);
-    }
-
-    public void rotateZ(float z) {
-        this.rotate(0, 0, z);
-    }
-
-    public void scaleVector(Vector3f vector) {
-        this.scaleVector.mul(vector);
-    }
-
-    public void scale(float x, float y, float z) {
-        this.scaleVector.mul(new Vector3f(x, y, z));
-    }
-
-    public void scaleX(float x) {
-        this.scale(x, 1f, 1f);
-    }
-
-    public void scaleY(float y) {
-        this.scale(1, y, 1);
-    }
-
-    public void scaleZ(float z) {
-        this.scale(1, 1, z);
+    public Vector3f getDirection() {
+        Vector3f baseDirection = new Vector3f(0, 0, -1);
+        baseDirection.rotateX((float) Math.toRadians(this.rotation.x));
+        baseDirection.rotateY((float) Math.toRadians(this.rotation.y));
+        baseDirection.rotateZ((float) Math.toRadians(this.rotation.z));
+        return baseDirection;
     }
 
     public Matrix4f getTransformMatrix() {
@@ -133,5 +84,30 @@ public class Transform {
         viewMatrix.rotate( (float) rotation.z, new Vector3f(0f, 0f, 1f));
         viewMatrix.translate(position.get(new Vector3f()).mul(-1));
         return viewMatrix;
+    }
+
+
+    public void translate(Vector3f vector) {
+        position.add(vector);
+    }
+
+    public void translate(float x, float y, float z) {
+        translate(new Vector3f(x, y, z));
+    }
+
+    public void translateY(float value) {
+        translate(0, value, 0);
+    }
+
+    public void rotate(Vector3f vector) {
+        rotation.add(vector);
+    }
+
+    public void rotate(float x, float y, float z) {
+        rotate(new Vector3f(x, y, z));
+    }
+
+    public void rotateX(float value) {
+        rotate(value, 0, 0);
     }
 }

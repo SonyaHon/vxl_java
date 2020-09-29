@@ -1,6 +1,6 @@
 package me.sonyahon.engine.resource.obj;
 
-import me.sonyahon.engine.components.StaticMeshData;
+import me.sonyahon.engine.d3.StaticMeshData;
 import me.sonyahon.engine.d3.MeshDataFactory;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -105,7 +105,7 @@ public class OBJLoader {
             indicesArray[i] = indices.get(i);
         }
 
-        return MeshDataFactory.fromData(verticesArray, uvArray, normalsArray, indicesArray);
+        return MeshDataFactory.fromDataUVs(verticesArray, uvArray, normalsArray, indicesArray);
     }
 
     private static void processVertex(

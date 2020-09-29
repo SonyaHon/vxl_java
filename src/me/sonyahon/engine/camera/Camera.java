@@ -1,8 +1,10 @@
-package me.sonyahon.engine.components;
+package me.sonyahon.engine.camera;
 
+import me.sonyahon.engine.d3.Transform;
+import me.sonyahon.engine.entity.Entity;
 import org.joml.Matrix4f;
 
-public class Camera {
+public class Camera extends Entity{
     private float FOVy;
     private float aspect;
     private float nearPlane;
@@ -10,6 +12,7 @@ public class Camera {
 
 
     public Camera(float FOVy, float aspect, float nearPlane, float farPlane) {
+        super(new Transform(), null, null);
         this.FOVy = FOVy;
         this.aspect = aspect;
         this.nearPlane = nearPlane;
