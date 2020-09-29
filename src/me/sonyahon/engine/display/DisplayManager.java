@@ -74,13 +74,18 @@ public class DisplayManager {
 
 
             GL.createCapabilities();
-//            GL11.glViewport(0, 0, realW, realH);
+            setDefaultViewport();
             GL11.glEnable(GL_DEPTH_TEST);
 
         } catch (RuntimeException e) {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    public static void setDefaultViewport() {
+        // @TODO detect retina displays and fix this bit
+        GL11.glViewport(0, 0, Reference.DISPLAY_WIDTH, Reference.DISPLAY_HEIGHT);
     }
 
     public static void clearDisplay() {

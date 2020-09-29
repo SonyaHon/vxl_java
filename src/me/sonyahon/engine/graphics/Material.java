@@ -6,9 +6,12 @@ import me.sonyahon.engine.resource.texture.Texture;
 public class Material {
     private ShaderProgram shaderProgram;
     private Texture texture = null;
+    private boolean isLightBlocking = true;
 
-    public Material(ShaderProgram shaderProgram) {
+    public Material(ShaderProgram shaderProgram, Texture texture, boolean isLightBlocking) {
         this.shaderProgram = shaderProgram;
+        this.texture = texture;
+        this.isLightBlocking = isLightBlocking;
     }
 
     public Material(ShaderProgram shaderProgram, Texture texture) {
@@ -26,5 +29,13 @@ public class Material {
 
     public Texture getTexture() {
         return texture;
+    }
+
+    public boolean isLightBlocking() {
+        return isLightBlocking;
+    }
+
+    public void setLightBlocking(boolean lightBlocking) {
+        isLightBlocking = lightBlocking;
     }
 }

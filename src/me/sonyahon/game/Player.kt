@@ -8,6 +8,7 @@ import me.sonyahon.engine.input.InputManager
 import me.sonyahon.engine.input.KeyCode
 import org.joml.Vector2f
 import org.joml.Vector3f
+import org.lwjgl.glfw.GLFW
 
 class Player(transform: Transform, material: Material?, meshData: StaticMeshData?) : Entity(transform, meshData, material) {
     private var mouseLastPosition = Vector2f()
@@ -27,7 +28,7 @@ class Player(transform: Transform, material: Material?, meshData: StaticMeshData
         MainCamera.INSTANCE.transform.rotateY(mouseDx * cameraRotateSpeedCoef)
         MainCamera.INSTANCE.transform.rotateX(mouseDy * cameraRotateSpeedCoef)
 
-        val camSpeed = 0.1f
+        var camSpeed = 0.1f
         val velocity = Vector3f()
 
         val direction = MainCamera.INSTANCE.transform.direction
@@ -45,6 +46,10 @@ class Player(transform: Transform, material: Material?, meshData: StaticMeshData
             velocity.add(perpendicular[Vector3f()].mul(1f))
         } else if (InputManager.instance.isKeyPressed(KeyCode.D)) {
             velocity.add(perpendicular[Vector3f()].mul(-1f))
+        }
+
+        if (InputManager.instance.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+            camSpeed *= 2;
         }
 
         MainCamera.INSTANCE.transform.translate(velocity.mul(camSpeed))

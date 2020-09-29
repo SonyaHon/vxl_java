@@ -1,24 +1,47 @@
 #version 330 core
 
-in vec3 color;
-in vec3 normal;
-in vec3 frag_pos;
+in VS_OUT {
+    vec3 fragPos;
+    vec3 normal;
+    vec3 color;
+    vec4 fragPosLightSpace;
+} fs_in;
 
-uniform float ambient_strength;
-uniform vec3 ambient_color;
-uniform vec3 sun_position;
+uniform sampler2D shadowMap;
 
-out vec4 color_out;
+uniform float ambientStrength;
+uniform vec3 ambientColor;
+
+uniform vec3 lightPos;
+
+out vec4 fragColor;
+
+float ShadowCalculation(vec4 fragPosLightSpace) {
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    return shadow;
+}
 
 void main() {
+    vec3 color = fs_in.color;
+    vec3 normal = normalize(fs_in.normal);
+    vec3 lightColor = ambientColor;
 
-    vec3 ambient = ambient_color * ambient_strength;
+    // ambient part
+    vec3 ambient = ambientStrength * ambientColor;
 
-    vec3 normal_normalized = normalize(normal);
-    vec3 light_direction = normalize(sun_position - frag_pos);
-    float diff = max(dot(normal_normalized, light_direction), 0.0);
-    vec3 diffuse = diff * ambient_color;
+    // diffuse part
+    vec3 lightDir = normalize(lightPos - fs_in.fragPos);
+    float diff = max(dot(lightDir, normal), 0.0);
+    vec3 diffuse = diff * lightColor;
 
-    vec3 result = color * (ambient + diffuse);
-    color_out = vec4(result, 1.0);
+    // shadow
+    float shadow = ShadowCalculation(fs_in.fragPosLightSpace);
+
+    fragColor = vec4(
+    (ambient + (1.0 - shadow) * diffuse) * color
+    , 1.0);
 }
