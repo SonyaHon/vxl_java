@@ -8,7 +8,7 @@ object Game {
     val sunPosition = (Vector3f(0f, 0f, -80f)).rotateX(Math.toRadians(45.0).toFloat())
 
     public fun update() {
-        val anglePerCycle = 0.02f;
+        val anglePerCycle = 0.2f;
         sunPosition.rotateX(Math.toRadians(anglePerCycle.toDouble()).toFloat());
     }
 }
