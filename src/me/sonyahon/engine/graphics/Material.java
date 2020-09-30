@@ -7,7 +7,7 @@ public class Material {
     private ShaderProgram shaderProgram;
     private Texture texture = null;
 
-    private float specStrength = 0.2f;
+    private float specStrength = 0.01f;
 
     private float specSharpness = 2;
 

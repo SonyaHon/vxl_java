@@ -76,6 +76,7 @@ public class Renderer {
 
         program.addFloatUniform("specStrength", material.getSpecStrength());
         program.addFloatUniform("specSharpness", material.getSpecSharpness());
+        program.addFloatUniform("sunlightStrength", Game.INSTANCE.getSunlightStrength());
 
         GL30.glBindVertexArray(meshData.getVaoID());
         enableVertexAttribArrays(meshData.getUsedAttribArrays());

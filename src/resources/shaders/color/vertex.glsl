@@ -11,12 +11,14 @@ uniform mat4 viewMatrix;
 out vec3 fragPos;
 out vec3 fragNormal;
 out vec3 fragColor;
+out float zPosition;
 
 
 void main() {
     fragPos = vec3(transformMatrix * vec4(vertexPos, 1.0));
     fragNormal = transpose(inverse(mat3(transformMatrix))) * normals;
     fragColor = colors;
+    zPosition = vertexPos.y;
 
     gl_Position = projectionMatrix * viewMatrix * vec4(fragPos, 1.0);
 }

@@ -5,7 +5,7 @@ import me.sonyahon.engine.utils.OpenSimplexNoise;
 
 public class TerrainNoise {
     public static final float BASE_NOISE_OFFSET = 100f;
-    public static final float BASE_FREQUENCY = 0.01f;
+    public static final float BASE_FREQUENCY = 0.008f;
     public static final float BASE_PERSISTENCE = 0.8f;
     public static final float PERSISTENCE_MULTIPLIER = 0.8f;
     public static final float FREQUENCY_MULTIPLAYER = 1.2F;

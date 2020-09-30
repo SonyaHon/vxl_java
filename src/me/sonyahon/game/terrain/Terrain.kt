@@ -19,6 +19,10 @@ class Terrain : Entity(Transform(), null, null) {
     }
 
     private fun initialGenerateChunks() {
-        loadedChunks.add(Chunk(Vector2f(0f, 0f)))
+        for (x in IntRange(-1, 1)) {
+            for (y in IntRange(-1, 1)) {
+                loadedChunks.add(Chunk(Vector2f(x.toFloat(), y.toFloat())))
+            }
+        }
     }
 }

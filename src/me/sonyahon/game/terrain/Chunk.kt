@@ -135,10 +135,10 @@ class Chunk(private var coordinates: Vector2f) : Entity(null, null, Material(Sha
                         vertices.add(rightQuad[0])
                         vertices.add(rightQuad[2])
 
-                        normals.add(Vector3f(1f, 0f, 0f))
-                        normals.add(Vector3f(1f, 0f, 0f))
-                        normals.add(Vector3f(1f, 0f, 0f))
-                        normals.add(Vector3f(1f, 0f, 0f))
+                        normals.add(Vector3f(-1f, 0f, 0f))
+                        normals.add(Vector3f(-1f, 0f, 0f))
+                        normals.add(Vector3f(-1f, 0f, 0f))
+                        normals.add(Vector3f(-1f, 0f, 0f))
 
                         indices.add(vertexOffset)
                         indices.add(vertexOffset + 2)
