@@ -19,7 +19,7 @@ public class DepthMap {
         frameBuffer = GL30.glGenFramebuffers();
         texSize = 1024;
         texId = GL20.glGenTextures();
-        projectionMatrix = new Matrix4f().ortho(-100f, 100f, -100f, 100f, 0.1f, 100f);
+        projectionMatrix = new Matrix4f().ortho(-500f, 500f, -500f, 500f, 0.1f, 100f);
 
         GL20.glBindTexture(GL20.GL_TEXTURE_2D, texId);
         GL20.glTexImage2D(GL20.GL_TEXTURE_2D, 0, GL20.GL_DEPTH_COMPONENT, texSize, texSize, 0, GL20.GL_DEPTH_COMPONENT, GL20.GL_FLOAT, 0);

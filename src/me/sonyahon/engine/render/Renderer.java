@@ -68,14 +68,14 @@ public class Renderer {
         program.addMatrix4fUniform("transformMatrix", transform.getTransformMatrix());
         program.addMatrix4fUniform("projectionMatrix", MainCamera.INSTANCE.getProjectionMatrix());
         program.addMatrix4fUniform("viewMatrix", MainCamera.INSTANCE.getTransform().getViewMatrix());
-        program.addMatrix4fUniform("lightSpaceMatrix", DepthMap.getInstance().getLightSpaceMatrix());
 
         program.addFloatUniform("ambientStrength", Game.INSTANCE.getAmbientStrength());
-        program.addVector3fUniform("ambientColor", Game.INSTANCE.getAmbientColor());
+        program.addVector3fUniform("lightColor", Game.INSTANCE.getLightColor());
         program.addVector3fUniform("lightPos", Game.INSTANCE.getSunPosition());
-        program.addVector3fUniform("viewPos", Game.INSTANCE.getSunPosition());
+        program.addVector3fUniform("viewPos", MainCamera.INSTANCE.getTransform().getPosition());
 
-
+        program.addFloatUniform("specStrength", material.getSpecStrength());
+        program.addFloatUniform("specSharpness", material.getSpecSharpness());
 
         GL30.glBindVertexArray(meshData.getVaoID());
         enableVertexAttribArrays(meshData.getUsedAttribArrays());

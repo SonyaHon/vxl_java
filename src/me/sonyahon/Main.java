@@ -6,13 +6,10 @@ import me.sonyahon.engine.display.DisplayManager;
 import me.sonyahon.engine.render.Renderer;
 import me.sonyahon.engine.resource.shader.ShaderManager;
 import me.sonyahon.engine.resource.texture.TextureManager;
-import me.sonyahon.engine.terrain.Terrain;
 import me.sonyahon.engine.utils.ShaderTouple;
-import me.sonyahon.game.Game;
 import me.sonyahon.game.MainCamera;
 import me.sonyahon.game.Player;
-import me.sonyahon.game.prefab.Plane;
-import org.joml.Vector3f;
+import me.sonyahon.game.terrain.Terrain;
 import org.lwjgl.opengl.GL20;
 
 import java.util.List;
@@ -53,7 +50,7 @@ public class Main {
             DisplayManager.clearDisplay();
 
             // Logic
-            Game.INSTANCE.update();
+//            Game.INSTANCE.update();
 
             player.update();
 

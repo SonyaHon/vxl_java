@@ -6,6 +6,11 @@ import me.sonyahon.engine.resource.texture.Texture;
 public class Material {
     private ShaderProgram shaderProgram;
     private Texture texture = null;
+
+    private float specStrength = 0.2f;
+
+    private float specSharpness = 2;
+
     private boolean isLightBlocking = true;
 
     public Material(ShaderProgram shaderProgram, Texture texture, boolean isLightBlocking) {
@@ -37,5 +42,13 @@ public class Material {
 
     public void setLightBlocking(boolean lightBlocking) {
         isLightBlocking = lightBlocking;
+    }
+
+    public float getSpecStrength() {
+        return specStrength;
+    }
+
+    public float getSpecSharpness() {
+        return specSharpness;
     }
 }

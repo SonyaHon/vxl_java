@@ -1,4 +1,4 @@
-package me.sonyahon.engine.terrain
+package me.sonyahon.game.terrain
 
 import me.sonyahon.engine.d3.Transform
 import me.sonyahon.engine.entity.Entity
