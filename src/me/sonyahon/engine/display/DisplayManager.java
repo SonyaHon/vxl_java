@@ -19,6 +19,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class DisplayManager {
 
     public static long MAIN_WINDOW = NULL;
+    public static int WINDOW_X_SCALE = 1;
+    public static int WINDOW_Y_SCALE = 1;
 
     public static void createDisplay() {
         try {
@@ -34,6 +36,7 @@ public class DisplayManager {
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+            glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_FALSE);
 
 
             MAIN_WINDOW = glfwCreateWindow(Reference.DISPLAY_WIDTH, Reference.DISPLAY_HEIGHT, Reference.WINDOW_TITLE, NULL, NULL);
@@ -57,6 +60,7 @@ public class DisplayManager {
                 realW = pWidth.get(0);
                 realH = pHeight.get(0);
 
+
                 GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
                 assert vidMode != null;
@@ -72,6 +76,18 @@ public class DisplayManager {
             glfwSwapInterval(Reference.VSYNC ? 1 : 0);
             glfwShowWindow(MAIN_WINDOW);
 
+            try (MemoryStack stack = stackPush()) {
+
+                IntBuffer xScale = stack.mallocInt(1);
+                IntBuffer yScale = stack.mallocInt(1);
+
+
+                glfwGetFramebufferSize(MAIN_WINDOW, xScale, yScale);
+
+                WINDOW_X_SCALE = xScale.get(0);
+                WINDOW_Y_SCALE = yScale.get(0);
+            }
+
 
             GL.createCapabilities();
             setDefaultViewport();
@@ -84,8 +100,7 @@ public class DisplayManager {
     }
 
     public static void setDefaultViewport() {
-        // @TODO detect retina displays and fix this bit
-        GL11.glViewport(0, 0, Reference.DISPLAY_WIDTH, Reference.DISPLAY_HEIGHT);
+        GL11.glViewport(0, 0, WINDOW_X_SCALE, WINDOW_Y_SCALE);
     }
 
     public static void clearDisplay() {
