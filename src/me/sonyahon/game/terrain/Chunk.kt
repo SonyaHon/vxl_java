@@ -10,13 +10,14 @@ import me.sonyahon.game.generation.TerrainNoise
 import org.joml.Vector2f
 import org.joml.Vector3f
 
-class Chunk(private var coordinates: Vector2f) : Entity(null, null, Material(ShaderManager.instance.get("color"), null)) {
+class Chunk(private var coordinates: Vector2f, private val noise: TerrainNoise) : Entity(null, null, Material(ShaderManager.instance.get("color"), null)) {
 
     val CHUNK_SIZE: Float = 64f
+    val CHUNK_SCALE: Float = 0.5f;
 
     init {
         val transform = Transform()
-        transform.translate(Vector3f(coordinates.x * CHUNK_SIZE, 0f, coordinates.y * CHUNK_SIZE))
+        transform.translate(Vector3f(coordinates.x * CHUNK_SIZE * CHUNK_SCALE, 0f, coordinates.y * CHUNK_SIZE * CHUNK_SCALE))
         this.transform = (transform)
 
         this.meshData = generateMesh()
@@ -24,8 +25,52 @@ class Chunk(private var coordinates: Vector2f) : Entity(null, null, Material(Sha
 
     private fun generateMesh(): StaticMeshData {
 
-        val heightMap = generateHeightMap()
+        val selfXOffset = coordinates.x * CHUNK_SIZE * CHUNK_SCALE;
+        val selfYOffset = coordinates.y * CHUNK_SIZE * CHUNK_SCALE;
 
+        val vertices = emptyList<Vector3f>() as MutableList<Vector3f>;
+        val normals = emptyList<Vector3f>() as MutableList<Vector3f>;
+        val indices = emptyList<Int>() as MutableList<Int>;
+        val colors = emptyList<Vector3f>() as MutableList<Vector3f>;
+
+        var lastIndex = 0;
+        for (y in IntRange(0, CHUNK_SIZE.toInt() - 1)) {
+            for (x in IntRange(0, CHUNK_SIZE.toInt() - 1)) {
+
+                val currentElevation = noise.getElevation(x.toFloat(), y.toFloat(), selfXOffset, selfYOffset);
+                val currentX = x * CHUNK_SCALE;
+                val currentY = y * CHUNK_SCALE;
+
+                val currentQuad = listOf<Vector3f>(
+                        Vector3f((currentX - CHUNK_SCALE * 0.5).toFloat(), currentElevation, (currentY - CHUNK_SCALE * 0.5).toFloat()),
+                        Vector3f((currentX + CHUNK_SCALE * 0.5).toFloat(), currentElevation, (currentY - CHUNK_SCALE * 0.5).toFloat()),
+                        Vector3f((currentX - CHUNK_SCALE * 0.5).toFloat(), currentElevation, (currentY + CHUNK_SCALE * 0.5).toFloat()),
+                        Vector3f((currentX + CHUNK_SCALE * 0.5).toFloat(), currentElevation, (currentY + CHUNK_SCALE * 0.5).toFloat())
+                )
+
+                for (vertex in currentQuad) {
+                    vertices.add(vertex)
+                    normals.add(Vector3f(0f, 1f, 0f));
+                    colors.add(Vector3f(0f, .5f, 1f)); // todo this should be gathered from the biom info
+                }
+
+                indices.add(lastIndex);
+                indices.add(lastIndex + 2);
+                indices.add(lastIndex + 1);
+
+                indices.add(lastIndex + 1);
+                indices.add(lastIndex + 2);
+                indices.add(lastIndex + 3);
+
+                lastIndex += 4;
+
+            }
+        }
+
+
+//        val heightMap = generateHeightMap()
+
+/*
         val vertices = MutableList<Vector3f>(0) { Vector3f() }
         val normals = MutableList<Vector3f>(0) { Vector3f() }
         val indices = MutableList(0) { 0 }
@@ -183,6 +228,7 @@ class Chunk(private var coordinates: Vector2f) : Entity(null, null, Material(Sha
 
         val colors = List(vertices.size) { Vector3f(0.5f, 0.9f, 0f) }
 
+*/
 
         val mesh = Mesh()
         mesh.setNormals(normals)
@@ -192,12 +238,12 @@ class Chunk(private var coordinates: Vector2f) : Entity(null, null, Material(Sha
         return mesh.commit()
     }
 
-    private fun generateHeightMap(): List<List<Float>> {
-        val xOffset: Float = coordinates.x * CHUNK_SIZE;
-        val yOffset: Float = coordinates.y * CHUNK_SIZE;
-
-        val noise = TerrainNoise();
-
-        return List(CHUNK_SIZE.toInt()) { y -> List(CHUNK_SIZE.toInt()) { x -> noise.getElevation(x.toFloat(), y.toFloat(), xOffset, yOffset) } }
-    }
+//    private fun generateHeightMap(): List<List<Float>> {
+//        val xOffset: Float = coordinates.x * CHUNK_SIZE;
+//        val yOffset: Float = coordinates.y * CHUNK_SIZE;
+//
+//        val noise = TerrainNoise();
+//
+//        return List(CHUNK_SIZE.toInt()) { y -> List(CHUNK_SIZE.toInt()) { x -> noise.getElevation(x.toFloat(), y.toFloat(), xOffset, yOffset) } }
+//    }
 }
