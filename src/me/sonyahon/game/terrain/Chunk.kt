@@ -41,6 +41,8 @@ class Chunk(private var coordinates: Vector2f, private val noise: TerrainNoise) 
                 val currentX = x * CHUNK_SCALE;
                 val currentY = y * CHUNK_SCALE;
 
+                // Current vertex start
+
                 val currentQuad = listOf<Vector3f>(
                         Vector3f((currentX - CHUNK_SCALE * 0.5).toFloat(), currentElevation, (currentY - CHUNK_SCALE * 0.5).toFloat()),
                         Vector3f((currentX + CHUNK_SCALE * 0.5).toFloat(), currentElevation, (currentY - CHUNK_SCALE * 0.5).toFloat()),
@@ -64,11 +66,23 @@ class Chunk(private var coordinates: Vector2f, private val noise: TerrainNoise) 
 
                 lastIndex += 4;
 
+                // Current Vertex end
+
+                // right veretxe check
+
+                val rightVertexElevation = noise.getElevation((x + 1).toFloat(), y.toFloat(), selfXOffset, selfYOffset);
+
+                if (rightVertexElevation != currentElevation) {
+
+                }
+
+                val bottomVertexElevation = noise.getElevation(x.toFloat(), (y + 1).toFloat(), selfXOffset, selfYOffset);
+
+                if (bottomVertexElevation != currentElevation) {
+
+                }
             }
         }
-
-
-//        val heightMap = generateHeightMap()
 
 /*
         val vertices = MutableList<Vector3f>(0) { Vector3f() }
@@ -237,13 +251,4 @@ class Chunk(private var coordinates: Vector2f, private val noise: TerrainNoise) 
         mesh.setColors(colors)
         return mesh.commit()
     }
-
-//    private fun generateHeightMap(): List<List<Float>> {
-//        val xOffset: Float = coordinates.x * CHUNK_SIZE;
-//        val yOffset: Float = coordinates.y * CHUNK_SIZE;
-//
-//        val noise = TerrainNoise();
-//
-//        return List(CHUNK_SIZE.toInt()) { y -> List(CHUNK_SIZE.toInt()) { x -> noise.getElevation(x.toFloat(), y.toFloat(), xOffset, yOffset) } }
-//    }
 }
